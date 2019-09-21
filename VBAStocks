@@ -61,7 +61,19 @@ For Each ws In Worksheets
                 End If
             ws.Cells(x, y + 2).NumberFormat = "0.00%"
             ws.Cells(x, y + 3).Value = total
-            openNumber = ws.Cells(I + 1, 3)
+            openNumber = ws.Cells(I + 1, 3).Value
+            
+            'situation when the open number is 0, then caluculaate the next open_number
+            If openNumber = 0 Then
+                For J = I + 1 To lastrow
+                    If ws.Cells(J, 1).Value <> ws.Cells(J + 1, 1).Value Then Exit For
+                    If ws.Cells(J, 3).Value > 0 Then
+                        openNumber = ws.Cells(J, 3).Value
+                        Debug.Print (ws.Cells(J, 3).Value)
+                        Exit For
+                    End If
+                Next J
+            End If
             x = x + 1
             total = ws.Cells(I + 1, 7).Value
         End If
